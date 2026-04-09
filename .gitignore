@@ -1,0 +1,16 @@
+.env
+agent/venv/
+agent/__pycache__/
+howibuilt.txt
+
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.bak
+*.swp
+.DS_Store
+.idea/
+.vscode/
