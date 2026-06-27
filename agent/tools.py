@@ -8,10 +8,37 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
 
+def classify_query(query: str):
+    q = query.strip().lower()
+
+    first_word = q.split()[0]
+
+    if first_word == "select":
+        return "SAFE"
+    elif first_word in ("insert", "update", "alter"):
+        return "NEEDS_APPROVAL"
+    elif first_word in ("delete", "drop", "truncate"):
+        return "BLOCKED"
+    return "UNKNOWN"
 
 @tool
 def run_sql_query(query: str):
-    """Execute a SQL query on the database and return the results."""
+    """Execute SQL query with safety and approval checks."""
+
+    query_type = classify_query(query)
+
+    # BLOCK dangerous queries
+    if query_type == "BLOCKED":
+        return " This operation (DELETE/DROP/TRUNCATE) is not allowed. Please run manually in DB."
+
+    # NEED APPROVAL
+    if query_type == "NEEDS_APPROVAL":
+        return {
+            "status": "PENDING_APPROVAL",
+            "query": query
+        }
+
+    # SAFE (SELECT)
     try:
         with engine.connect() as conn:
             result = conn.execute(text(query))
@@ -19,7 +46,6 @@ def run_sql_query(query: str):
             return [dict(row._mapping) for row in rows]
     except Exception as e:
         return f"Error: {str(e)}"
-
 
 @tool
 def get_schema():
