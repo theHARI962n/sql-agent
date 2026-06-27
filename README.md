@@ -14,3 +14,8 @@
 ## Install reuirements 
 - from requiremwnts.tx 
 - pip install psycopg2-binary is for postgres
+
+## Versions
+- V1 - used Langchain agent where it had most of control
+- V2 - english to direct sql based result with HITL
+- V3 - 2 Stage AI system (SQL generation , answer generation)

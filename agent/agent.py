@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-
+from answer_generator import generate_answer
 load_dotenv()
 
 from llm_factory import get_llm
@@ -60,14 +60,24 @@ while True:
         print(result["message"])
         continue
 
-    if "rows" in result:
-        print("\nResult:")
+    # Generate natural language answer
+    final_answer = generate_answer(
+        llm,
+        question,
+        result
+    )
 
-        for row in result["rows"]:
-            print(row)
-    else:
-        print(result["message"])
+    print("\n🤖 Answer:")
+    print(final_answer)
 
+    # if "rows" in result:
+    #     print("\nResult:")
+
+    #     for row in result["rows"]:
+    #         print(row)
+    # else:
+    #     print(result["message"])
+    
 
 
 # Previous version
