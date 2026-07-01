@@ -7,6 +7,10 @@
 - Modular architecture
 - Multi-model support (add how many ever model and can change ,(model agnostic agent))
 
+## Architechture Diagram 
+![Architecture Diagram](images/archi.png)
+
+
 ## API Keys
 - get your open ai api key
 - and beready with postgress url for .env 
